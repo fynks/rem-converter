@@ -5,59 +5,24 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PX to REM Converter</title>
 <style>
- *, *::before, *::after{ box-sizing: border-box;} p, h1, h2, h3, h4, h5, h6{ overflow-wrap: break-word} input, button, textarea, select{ font: inherit} html{ scroll-behavior: smooth} body{ font-family: Arial, sans-serif;}header{ text-align: center} main{ max-width: 98%; margin: 1rem auto; padding: 1rem; border: 0.07rem solid #ccc; border-radius: 0.5rem; box-shadow: 0 00.7rem rgba(0, 0, 0, 0.1);} textarea{ width: 100%; min-height: 13.5rem; margin-bottom:0.7rem; padding:0.7rem; border: 0.07rem solid #ccc; border-radius: 0.3rem; resize: none;}.btns{ display: flex; justify-content: center} button{ display: block; margin-block: 0.7rem; margin-inline: 0.3rem; padding: 0.7rem 1.25rem; background-color: #007bff; color: #fff; border: none; border-radius: 0.3125rem; cursor: pointer;} button:hover{ background-color: #0056b3;}
+*, *::before, *::after{ box-sizing: border-box;} p, h1, h2, h3, h4, h5, h6{ overflow-wrap: break-word;} input, button, textarea, select{ font: inherit;} html{ scroll-behavior: smooth;} body{ font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f0f2f5; color: #333;} header{ text-align: center; padding-block: 0.5rem; background-color: #007bff; color: #fff;} main{ max-width: 100rem; width: 96%; margin: 1.5rem auto; padding: 1rem; background-color: #fff; border: 0.0625rem solid #ccc; border-radius: 0.5rem; box-shadow: 0 0 0.625rem rgba(0, 0, 0, 0.1);} textarea{ width: 100%; min-height: 12rem; padding: 0.5rem; border: 0.0625rem solid #ccc; border-radius: 0.3rem; resize: none; font-family: inherit;} .btns{ display: flex; justify-content: center; gap: 1rem; margin-block: 1rem;} button{ padding: 0.7rem 1.25rem; background-color: #007bff; color: #fff; border: none; border-radius: 0.3125rem; cursor: pointer; transition: background-color 0.3s ease;} button:hover{ background-color: #0056b3;}
 </style>
 </head>
 <body>
-    <header>
-        <h2>Convert 'CSS' with <u>px</u> to <u>rem</u></h2>
-    </header>
-    <main>
-      <textarea id="input" placeholder="Enter CSS code with px units..."></textarea>
-      <div class="btns">
-      <button id="convert">Convert to REM</button>
-      <button id="copy">Copy</button>
-    </div>
-      <textarea id="output" placeholder="Converted CSS with rem units will appear here..." readonly></textarea>
-    </main>
-    
-
+<header>
+<h2>Convert 'CSS' with <u>px</u> to <u>rem</u></h2>
+</header>
+<main>
+<textarea id="input" placeholder="Enter CSS code with px units..."></textarea>
+<div class="btns">
+<button id="convert">Convert to REM</button>
+<button id="copy">Copy</button>
+</div>
+<textarea id="output" placeholder="Converted CSS with rem units will appear here..." readonly></textarea>
+</main> 
 <script>
-const inputTextArea = document.getElementById('input');
-const outputTextArea = document.getElementById('output');
-const convertButton = document.getElementById('convert');
-const copyButton = document.getElementById('copy');
-
-convertButton.addEventListener('click', () => {
-  const cssCode = inputTextArea.value;
-  try {
-    const convertedCode = convertPXtoREM(cssCode);
-    outputTextArea.value = convertedCode;
-  } catch (error) {
-    outputTextArea.value = "Error: Invalid CSS code";
-    console.error(error);
-  }
-});
-
-copyButton.addEventListener('click', () => {
-  const textToCopy = outputTextArea.value;
-  navigator.clipboard.writeText(textToCopy)
-    .then(() => {
-      console.log('Copied to clipboard!'); // Optional success message in console
-    })
-    .catch(err => {
-      console.error('Failed to copy to clipboard:', err); // Optional error handling
-    });
-});
-        function convertPXtoREM(css) {
-            const regex = /([\d.]+)px/g; // Matches any number followed by "px"
-            return css.replace(regex, (match, pxValue) => {
-                const fontSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
-                const remValue = parseFloat(pxValue) / fontSize;
-                return `${remValue}rem`;
-            });
-        }
+ document.getElementById('convert').addEventListener('click', ()=>{ const inputText=document.getElementById('input').value; const outputTextArea=document.getElementById('output'); try{ const convertedText=convertPXtoREM(inputText); outputTextArea.value=convertedText;} catch (error){ outputTextArea.value="Error: Invalid CSS code"; console.error(error);}}); document.getElementById('copy').addEventListener('click', async ()=>{ const textToCopy=document.getElementById('output').value; try{ await navigator.clipboard.writeText(textToCopy); console.log('Copied to clipboard!');} catch (error){ console.error('Failed to copy to clipboard:', error);}}); function convertPXtoREM(css){ const regex=/([\d.]+)px/g; const fontSize=parseFloat(getComputedStyle(document.documentElement).fontSize); return css.replace(regex, (match, pxValue)=>{ const remValue=parseFloat(pxValue) / fontSize; return `${remValue}rem`;});
+    }
 </script>
-
 </body>
 </html>
